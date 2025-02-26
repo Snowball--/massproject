@@ -5,5 +5,6 @@ namespace app\models\Tickets;
 
 enum TicketStatusEnum
 {
-
+    case Active;
+    case Resolved;
 }

@@ -1,5 +1,7 @@
 <?php
 
+use app\models\Tickets\Ticket;
+use app\models\Tickets\TicketStatusEnum;
 use yii\db\Migration;
 
 class m250226_194117_createTicketsEntity extends Migration
@@ -9,11 +11,15 @@ class m250226_194117_createTicketsEntity extends Migration
      */
     public function safeUp()
     {
-        $this->createTable(\app\models\Tickets\Ticket::tableName(), [
+        $this->createTable(Ticket::tableName(), [
             'id' => $this->primaryKey(),
             'name' => $this->string(255)->notNull(),
             'email' => $this->string(255)->notNull(),
-            'status' => $this->string(255),
+            'status' => $this->string(255)->defaultValue(TicketStatusEnum::Active->name),
+            'message' => $this->text(),
+            'comment' => $this->text()->null()->defaultValue(null),
+            'created_at' => $this->timestamp(),
+            'updated_at' => $this->timestamp()->null()->defaultValue(null),
         ]);
     }
 
@@ -22,8 +28,6 @@ class m250226_194117_createTicketsEntity extends Migration
      */
     public function safeDown()
     {
-        echo "m250226_194117_createTicketsEntity cannot be reverted.\n";
-
-        return false;
+        $this->dropTable(Ticket::tableName());
     }
 }
