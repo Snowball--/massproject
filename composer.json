@@ -19,7 +19,9 @@
         "yiisoft/yii2-bootstrap5": "~2.0.2",
         "yiisoft/yii2-symfonymailer": "~2.0.3",
         "vlucas/phpdotenv": "^5.6@dev",
-        "yiisoft/yii-swagger": "dev-master"
+        "zircote/swagger-php": "^5.0@dev",
+        "bower-asset/swagger-ui": "^5.19",
+        "doctrine/annotations": "2.0.x-dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

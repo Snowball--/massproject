@@ -13,9 +13,33 @@ use yii\db\ActiveRecord;
  */
 class Ticket extends ActiveRecord
 {
+    public ?int $id = null;
+    public ?string $name = null;
+    public ?string $email = null;
+    public ?string $status = null;
+    public ?string $message = null;
+    public ?string $comment = null;
+    public ?int $created_at = null;
+    public ?int $updated_at = null;
+
+
     public static function tableName(): string
     {
         return 'tickets';
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'id',
+            'name',
+            'email',
+            'status',
+            'message',
+            'comment',
+            'created_at',
+            'updated_at',
+        ];
     }
 
     public function rules(): array

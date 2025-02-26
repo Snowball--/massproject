@@ -1,5 +1,7 @@
 <?php
 
+use app\modules\Api\Module;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -7,6 +9,7 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'name' => 'Tickets',
+    'version' => '1.0.0',
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -16,6 +19,9 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => getenv('COOKIE_KEY'),
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -50,6 +56,14 @@ $config = [
         ],
 
     ],
+    'modules' => [
+        'api' => [
+            'class' => Module::class,
+        ],
+        'swagger' => [
+            'class' => app\modules\Swagger\Module::class
+        ]
+    ],
     'container' => include __DIR__ . '/di.php',
     'defaultRoute' => 'tickets/index',
     'params' => $params,
@@ -61,7 +75,7 @@ if (YII_ENV_DEV) {
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['*'],
     ];
 
     $config['bootstrap'][] = 'gii';
