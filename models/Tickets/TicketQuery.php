@@ -13,7 +13,7 @@ use yii\db\ActiveQuery;
  */
 class TicketQuery extends ActiveQuery
 {
-    public function all($db = null): self
+    public function findAll($db = null): self
     {
         return $this->where([]);
     }

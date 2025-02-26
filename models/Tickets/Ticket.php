@@ -27,7 +27,7 @@ class Ticket extends ActiveRecord
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
-    public static function find(): TicketQuery
+    public static function repository(): TicketQuery
     {
         return new TicketQuery(self::class);
     }

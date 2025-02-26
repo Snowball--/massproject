@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace app\controllers;
 
+use app\models\Tickets\Ticket;
 use app\services\TicketsService;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 
 /**
@@ -14,14 +16,21 @@ use yii\web\Controller;
  */
 class TicketsController extends Controller
 {
-    public function __construct($id, $module, $config = [], private readonly TicketsService $ticketsService)
+    public function __construct($id, $module, private readonly TicketsService $ticketsService, $config = [])
     {
         parent::__construct($id, $module, $config);
     }
 
-
-    public function actionIndex()
+    public function actionIndex(): string
     {
-        return $this->render('index');
+        $dataProvider = new ActiveDataProvider([
+            'query' => Ticket::repository()->findAll(),
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ]
+            ],
+        ]);
+        return $this->render('index', ['dataProvider' => $dataProvider]);
     }
 }
