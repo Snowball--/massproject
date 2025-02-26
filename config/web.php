@@ -15,7 +15,7 @@ $config = [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'q0GfAw5IwzhqIzlji3pGB0JYJ69iXAMn',
+            'cookieValidationKey' => getenv('COOKIE_KEY'),
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -46,11 +46,12 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => include __DIR__ . '/rules.php',
+            'rules' => include __DIR__ . '/routes.php',
         ],
 
     ],
     'container' => include __DIR__ . '/di.php',
+    'defaultRoute' => 'tickets/index',
     'params' => $params,
 ];
 
