@@ -40,7 +40,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             ['label' => 'Admin', 'url' => ['/tickets']],
-            ['label' => 'Api', 'url' => ['/site/about']]
+            ['label' => 'Api', 'url' => ['/swagger/api']]
         ]
     ]);
     NavBar::end();

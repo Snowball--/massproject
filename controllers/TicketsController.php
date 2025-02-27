@@ -16,7 +16,7 @@ use yii\web\Controller;
  */
 class TicketsController extends Controller
 {
-    public function __construct($id, $module, private readonly TicketsService $ticketsService, $config = [])
+    public function __construct($id, $module, $config = [])
     {
         parent::__construct($id, $module, $config);
     }
@@ -24,7 +24,7 @@ class TicketsController extends Controller
     public function actionIndex(): string
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Ticket::repository()->findAll(),
+            'query' => Ticket::repository()->findAllByStatus($this->request->get('status', null)),
             'sort' => [
                 'defaultOrder' => [
                     'created_at' => SORT_DESC,
