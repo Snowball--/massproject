@@ -22,13 +22,13 @@ readonly class Ticket
         #[OA\Property(description: 'Email', type: 'string')]
         public readonly string $email,
         #[OA\Property(description: 'Статус', type: 'string')]
-        public readonly int $status,
+        public readonly string $status,
         #[OA\Property(description: 'Сообщение', type: 'string')]
-        public readonly int $message,
+        public readonly string $message,
         #[OA\Property(description: 'Дата создания', type: 'string')]
-        public readonly string $created_at,
+        public readonly ?string $created_at,
         #[OA\Property(description: 'Дата обновления', type: 'string')]
-        public readonly string $updated_at,
+        public readonly ?string $updated_at,
         #[OA\Property(description: 'Ответ', type: 'reply', nullable: true)]
         public readonly ?Reply $reply = null
     ) {

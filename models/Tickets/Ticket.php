@@ -13,15 +13,6 @@ use yii\db\ActiveRecord;
  */
 class Ticket extends ActiveRecord
 {
-    public ?int $id = null;
-    public ?string $name = null;
-    public ?string $email = null;
-    public ?string $status = null;
-    public ?string $message = null;
-    public ?string $comment = null;
-    public ?int $created_at = null;
-    public ?int $updated_at = null;
-
 
     public static function tableName(): string
     {
@@ -51,6 +42,20 @@ class Ticket extends ActiveRecord
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
+
+    public function beforeSave($insert): bool
+    {
+        $date = new \DateTimeImmutable();
+
+        if ($insert) {
+            $this->status = TicketStatusEnum::Active->name;
+            $this->created_at = $date->format('Y-m-d H:i:s');
+        } else {
+            $this->updated_at = $date->format('Y-m-d H:i:s');
+        }
+        return parent::beforeSave($insert);
+    }
+
     public static function repository(): TicketQuery
     {
         return new TicketQuery(self::class);

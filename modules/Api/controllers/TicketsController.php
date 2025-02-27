@@ -67,9 +67,17 @@ class TicketsController extends BaseApiController
     )]
     #[RequestBody(CreateTicketForm::class)]
     #[Response\OK]
-    public function actionCreate()
+    public function actionCreate(): array|\app\models\Tickets\Ticket
     {
-        dd($this->request);
+        $form = new CreateTicketForm();
+        $form->load(Yii::$app->request->post(), '');
+
+        if ($form->validate()) {
+            $response = $this->ticketsService->create($form);
+        } else {
+            $response = $form->getErrors();
+        }
+        return $response;
     }
 
     #[OA\Put(

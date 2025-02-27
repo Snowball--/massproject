@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace app\modules\Api\Contract\Form;
 
+use app\models\Tickets\CreateTicketFormInterface;
 use app\validator\ValidatedInterface;
 use yii\base\Model;
 use OpenApi\Attributes as OA;
@@ -14,7 +15,7 @@ use OpenApi\Attributes as OA;
  * @package app\modules\Api\Contract\Form
  */
 #[OA\Schema]
-class CreateTicketForm extends Model implements ValidatedInterface
+class CreateTicketForm extends Model implements ValidatedInterface, CreateTicketFormInterface
 {
     #[OA\Property(example: 'Иванов Иван')]
     public string $name = '';
