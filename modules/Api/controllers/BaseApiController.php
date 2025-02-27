@@ -7,6 +7,7 @@ namespace app\modules\Api\controllers;
 use DomainException;
 use Yii;
 use yii\base\InvalidRouteException;
+use yii\filters\auth\HttpBearerAuth;
 use yii\rest\Controller;
 use yii\web\UnprocessableEntityHttpException;
 
@@ -23,6 +24,17 @@ class BaseApiController extends Controller
         $this->serializer = Yii::$app->get('serializer');
         parent::__construct($id, $module, $config);
     }
+
+    public function behaviors(): array
+    {
+        return [
+            'authenticator' => [
+                'class' => HttpBearerAuth::class,
+                'user' => Yii::$app->get('user'),
+            ],
+        ];
+    }
+
 
     public function optionalAuth(): array
     {

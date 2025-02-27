@@ -32,12 +32,9 @@ class TicketsController extends BaseApiController
         parent::__construct($id, $module, $config);
     }
 
-    public function behaviors()
+    public function optionalAuth(): array
     {
-        $behaviors = parent::behaviors();
-        $behaviors['contentNegotiator']['formats']['application/json'] = \yii\web\Response::FORMAT_JSON;
-        $behaviors['contentNegotiator']['formats']['text/html'] = \yii\web\Response::FORMAT_JSON;
-        return $behaviors;
+        return ['create'];
     }
 
     #[OA\Get(
@@ -45,6 +42,7 @@ class TicketsController extends BaseApiController
         operationId: 'list',
         description: 'Возвращает список заявок',
         summary: 'Список заявок',
+        security: [['BearerAuth' => []]],
         tags: ['tickets']
     )]
     #[OA\Parameter(name: 'page', description: 'Страница', in: 'query', required: false, example: 1)]

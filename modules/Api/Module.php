@@ -21,6 +21,14 @@ use yii\web\Response;
 #[OA\Server(
     url: SERVER_URL
 )]
+#[OA\SecurityScheme(
+    securityScheme: 'BearerAuth',
+    type: 'http',
+    scheme: 'Bearer',
+)]
+#[OA\OpenApi(
+    security: [[], ['BearerAuth' => []]],
+)]
 class Module extends \yii\base\Module implements BootstrapInterface
 {
     public function init()
@@ -34,6 +42,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             $app->on(\yii\base\Application::EVENT_BEFORE_REQUEST, function () use ($app) {
                 if (str_starts_with($app->request->url, "/$this->uniqueId")) {
                     $app->request->enableCsrfValidation = false;
+                    $app->response->format = Response::FORMAT_JSON;
 
                     $app->response->on(Response::EVENT_BEFORE_SEND, function () use ($app) {
                         $response = $app->response;
