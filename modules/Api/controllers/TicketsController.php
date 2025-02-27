@@ -6,6 +6,7 @@ namespace app\modules\Api\controllers;
 use app\modules\Api\Contract\Data\Collection;
 use app\modules\Api\Contract\Data\TicketFactory;
 use app\modules\Api\Contract\Form\CreateTicketForm;
+use app\modules\Api\Contract\Form\ReplyTicketForm;
 use app\modules\Api\Contract\RequestBody;
 use app\modules\Api\Contract\Response;
 use app\services\TicketsService;
@@ -86,10 +87,28 @@ class TicketsController extends BaseApiController
         description: 'Ответ на заявку',
         tags: ['tickets']
     )]
+    #[OA\Parameter(
+        name: 'id',
+        description: 'ID заявки',
+        in: 'path',
+        required: true,
+        schema: new OA\Schema(type: 'integer')
+    )]
+    #[RequestBody(ReplyTicketForm::class)]
     #[Response\OK]
-    public function actionReply(int $id)
+    public function actionReply(int $id): array|\app\models\Tickets\Ticket
     {
+        $form = new ReplyTicketForm();
+        $form->load(Yii::$app->request->post(), '');
+        $form->setTicketId($id);
 
+        if ($form->validate()) {
+            $response = $this->ticketsService->reply($form);
+        } else {
+            $response = $form->getErrors();
+        }
+
+        return $response;
     }
 
     public function afterAction($action, $result)

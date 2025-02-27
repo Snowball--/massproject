@@ -17,4 +17,9 @@ class TicketQuery extends ActiveQuery
     {
         return $this->where([]);
     }
+
+    public function findById(int $id): self
+    {
+        return $this->andWhere(['id' => $id]);
+    }
 }
