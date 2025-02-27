@@ -48,7 +48,14 @@ class TicketsController extends BaseApiController
         tags: ['tickets']
     )]
     #[OA\Parameter(name: 'page', description: 'Страница', in: 'query', required: false, example: 1)]
-    #[OA\Parameter(name: 'status', description: 'Статус', in: 'query', required: false, example: TicketStatusEnum::Active->name)]
+    #[OA\Parameter(
+        name: 'status',
+        description: 'Статус',
+        in: 'query',
+        required: false,
+        schema: new OA\Schema(type: 'string', enum: TicketStatusEnum::class),
+        example: TicketStatusEnum::Active->name
+    )]
     #[Response\Collection(Ticket::class)]
     public function actionList(): Collection
     {

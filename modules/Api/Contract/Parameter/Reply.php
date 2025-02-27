@@ -18,7 +18,6 @@ class Reply extends OA\Parameter
         parent::__construct(
             name: 'reply',
             description: 'Текст ответа',
-            in: 'query',
             schema: new OA\Schema(type: \app\modules\Api\Contract\Data\Reply::class),
             example: new \app\modules\Api\Contract\Data\Reply("Текст ответа")
         );

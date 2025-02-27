@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace app\controllers;
 
 use app\models\Tickets\Ticket;
-use app\services\TicketsService;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 
