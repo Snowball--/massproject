@@ -14,6 +14,7 @@ use app\modules\Api\Contract\Response;
 use app\services\TicketsService;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\Cors;
 use yii\rest\Controller;
 use OpenApi\Attributes as OA;
 
@@ -26,10 +27,19 @@ use OpenApi\Attributes as OA;
  */
 class TicketsController extends BaseApiController
 {
+
     public function __construct($id, $module, private readonly TicketsService $ticketsService, $config = [])
     {
         $this->serializer = Yii::$app->get('serializer');
         parent::__construct($id, $module, $config);
+    }
+
+    public function behaviors(): array
+    {
+        $behaviors = parent::behaviors() ?? [];
+
+        $behaviors['authenticator']['except'] = ['options'];
+        return $behaviors;
     }
 
     public function optionalAuth(): array
@@ -80,12 +90,7 @@ class TicketsController extends BaseApiController
         $form = new CreateTicketForm();
         $form->load(Yii::$app->request->post(), '');
 
-        if ($form->validate()) {
-            $response = $this->ticketsService->create($form);
-        } else {
-            $response = $form->getErrors();
-        }
-        return $response;
+        return $form->validate() ? $this->ticketsService->create($form) : $form->getErrors();
     }
 
     #[OA\Put(
@@ -110,23 +115,11 @@ class TicketsController extends BaseApiController
         $form->load(Yii::$app->request->post(), '');
         $form->setTicketId($id);
 
-        if ($form->validate()) {
-            $response = $this->ticketsService->reply($form);
-        } else {
-            $response = $form->getErrors();
-        }
-
-        return $response;
+        return $form->validate() ? $this->ticketsService->reply($form) : $form->getErrors();
     }
 
-    public function afterAction($action, $result)
+    public function actionOptions(): null
     {
-        $result = parent::afterAction($action, $result);
-        return $this->serializeData($result);
-    }
-
-    protected function serializeData($data)
-    {
-        return $this->serializer->serialize($data);
+        return null;
     }
 }
