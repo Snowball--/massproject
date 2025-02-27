@@ -31,19 +31,14 @@ use yii\web\Response;
 )]
 class Module extends \yii\base\Module implements BootstrapInterface
 {
-    public function init()
-    {
-        parent::init();
-    }
-
     public function bootstrap($app): void
     {
         if ($app instanceof \yii\web\Application) {
             $app->on(\yii\base\Application::EVENT_BEFORE_REQUEST, function () use ($app) {
                 // Не удалось завести CORS через поведение
-                $app->response->headers->set('Access-Control-Allow-Methods', 'GET,POST,PUT');
-                $app->response->headers->set('Access-Control-Allow-Headers', 'Content-type,Authorization');
-                $app->response->headers->set('Access-Control-Allow-Origin', 'http://be.local:57000');
+                $app->response->headers->set('Access-Control-Allow-Methods', getenv('ACCESS_CONTROL_ALLOW_METHODS'));
+                $app->response->headers->set('Access-Control-Allow-Headers', getenv('ACCESS_CONTROL_ALLOW_HEADERS'));
+                $app->response->headers->set('Access-Control-Allow-Origin', getenv('ACCESS_CONTROL_ALLOW_ORIGIN'));
 
                 if (str_starts_with($app->request->url, "/$this->uniqueId")) {
                     $app->request->enableCsrfValidation = false;
