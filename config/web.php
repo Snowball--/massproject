@@ -1,5 +1,6 @@
 <?php
 
+use app\events\EventsBootstrap;
 use app\modules\Api\Module;
 
 $params = require __DIR__ . '/params.php';
@@ -10,7 +11,11 @@ $config = [
     'basePath' => dirname(__DIR__),
     'name' => 'Tickets',
     'version' => '1.0.0',
-    'bootstrap' => ['log', 'api'],
+    'bootstrap' => [
+        'log',
+        'api',
+        EventsBootstrap::class
+    ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',

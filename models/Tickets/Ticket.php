@@ -14,6 +14,7 @@ use yii\db\ActiveRecord;
 class Ticket extends ActiveRecord
 {
 
+
     public static function tableName(): string
     {
         return 'tickets';

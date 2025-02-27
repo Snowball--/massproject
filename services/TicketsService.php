@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace app\services;
 
+use app\events\TicketReply;
 use app\models\Tickets\CreateTicketFormInterface;
 use app\models\Tickets\ReplyTicketFormInterface;
 use app\models\Tickets\Ticket;
 use app\models\Tickets\TicketStatusEnum;
+use yii\base\Component;
+use yii\db\Exception;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -15,8 +18,9 @@ use yii\web\NotFoundHttpException;
  * @author snowball <snow-snowball@yandex.ru>
  * @package app\services
  */
-class TicketsService
+class TicketsService extends Component
 {
+
     public function create(CreateTicketFormInterface $form): Ticket
     {
         $ticket = new Ticket();
@@ -29,7 +33,7 @@ class TicketsService
     }
 
     /**
-     * @throws NotFoundHttpException
+     * @throws NotFoundHttpException|Exception
      */
     public function reply(ReplyTicketFormInterface $form): Ticket
     {
@@ -40,7 +44,10 @@ class TicketsService
 
         $ticket->comment = $form->getComment();
         $ticket->status = TicketStatusEnum::Resolved->name;
-        $ticket->save();
+        if ($ticket->save()) {
+            $event = new TicketReply($ticket);
+            $this->trigger(TicketReply::EVENT_REPLY, $event);
+        }
 
         return $ticket;
     }
