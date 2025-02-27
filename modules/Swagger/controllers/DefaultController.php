@@ -69,9 +69,13 @@ class DefaultController extends Controller
      */
     private function generate(Module $module): string
     {
-        return Yii::$app->cache->getOrSet([$module->uniqueId, 'docs'], function () use ($module) {
+        define('API_VERSION', $module->version);
+        define('SERVER_URL', Url::base(true) . "/$module->uniqueId");
+
+        return Generator::scan([$module->basePath])->toYaml();
+        return Yii::$app->cache->getOrSet([$module->uniqueId, 'swagger'], function () use ($module) {
             define('API_VERSION', $module->version);
-            define('SERVER_URL', Url::base(true) . "/$module->uniqueId");
+            define('SERVER_URL', "/requests");
 
             return Generator::scan([$module->basePath])->toYaml();
         }, 0, new FileDependency(['fileName' => $module->basePath]));

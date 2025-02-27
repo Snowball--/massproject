@@ -10,9 +10,9 @@ return [
         'controller' => TicketsController::class,
     ],
     '/tickets' => 'tickets/index',
-    'POST /requests' => 'api/tickets/create',
-    'GET /requests' => 'api/tickets/list',
-    'PUT /requests/<id>' => 'api/tickets/reply',
+    'POST /api/requests' => 'api/tickets/create',
+    'GET /api/requests' => 'api/tickets/list',
+    'PUT /api/requests/<id>' => 'api/tickets/reply',
 
     '/swagger/<moduleId>' => 'swagger/default/index',
 ];

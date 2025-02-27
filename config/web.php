@@ -10,7 +10,7 @@ $config = [
     'basePath' => dirname(__DIR__),
     'name' => 'Tickets',
     'version' => '1.0.0',
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'api'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -54,7 +54,12 @@ $config = [
             'showScriptName' => false,
             'rules' => include __DIR__ . '/routes.php',
         ],
-
+        'serializer' => [
+            'class' => yii\rest\Serializer::class,
+            'collectionEnvelope' => 'items',
+            'linksEnvelope' => 'links',
+            'metaEnvelope' => 'meta',
+        ],
     ],
     'modules' => [
         'api' => [
