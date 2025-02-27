@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace app\modules\Api\controllers;
 
+use app\models\Tickets\TicketStatusEnum;
 use app\modules\Api\Contract\Data\Collection;
+use app\modules\Api\Contract\Data\Ticket;
 use app\modules\Api\Contract\Data\TicketFactory;
 use app\modules\Api\Contract\Form\CreateTicketForm;
 use app\modules\Api\Contract\Form\ReplyTicketForm;
@@ -43,15 +45,15 @@ class TicketsController extends BaseApiController
         operationId: 'list',
         description: 'Возвращает список заявок',
         summary: 'Список заявок',
-        tags: ['tickets'],
-        responses: [
-            new OA\Response(response: 200, description: 'Список заявок')
-        ]
+        tags: ['tickets']
     )]
+    #[OA\Parameter(name: 'page', description: 'Страница', in: 'query', required: false, example: 1)]
+    #[OA\Parameter(name: 'status', description: 'Статус', in: 'query', required: false, example: TicketStatusEnum::Active->name)]
+    #[Response\Collection(Ticket::class)]
     public function actionList(): Collection
     {
         return new Collection(new ActiveDataProvider([
-            'query' => \app\models\Tickets\Ticket::repository()->findAll(),
+            'query' => \app\models\Tickets\Ticket::repository()->findAllByStatus($this->request->get('status')),
             'sort' => [
                 'defaultOrder' => [
                     'created_at' => SORT_DESC,
@@ -96,6 +98,7 @@ class TicketsController extends BaseApiController
     )]
     #[RequestBody(ReplyTicketForm::class)]
     #[Response\OK]
+    #[Response\NotFound]
     public function actionReply(int $id): array|\app\models\Tickets\Ticket
     {
         $form = new ReplyTicketForm();

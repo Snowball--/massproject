@@ -13,9 +13,14 @@ use yii\db\ActiveQuery;
  */
 class TicketQuery extends ActiveQuery
 {
-    public function findAll($db = null): self
+    public function findAllByStatus(string $status = null): self
     {
-        return $this->where([]);
+        $query = $this->where([]);
+        if ($status !== null) {
+            $query->andWhere(['status' => $status]);
+        }
+
+        return $query;
     }
 
     public function findById(int $id): self
